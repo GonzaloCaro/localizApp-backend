@@ -32,14 +32,11 @@ GRANT "RESOURCE" TO gestion_transporte;
 ALTER USER gestion_transporte DEFAULT ROLE "RESOURCE";
 ```
 
-
 ### Traer imagen docker
 
 ```
 sudo docker pull gonzaduoc/img_cn1_gestion_usuarios
 ```
-
-
 
 ### Ver logs docker
 
