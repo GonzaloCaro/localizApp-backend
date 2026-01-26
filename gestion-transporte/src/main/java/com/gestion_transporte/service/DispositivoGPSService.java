@@ -5,9 +5,13 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.gestion_transporte.DTO.DispositivoGPSDTO;
 import com.gestion_transporte.DTO.VehiculoDTO;
+import com.gestion_transporte.exception.ResourceNotFoundException;
 import com.gestion_transporte.model.DispositivoGPS;
+import com.gestion_transporte.model.Vehiculo;
 import com.gestion_transporte.repository.DispositivoGPSRepository;
+import com.gestion_transporte.repository.VehiculoRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 public class DispositivoGPSService {
 
     private final DispositivoGPSRepository dispositivoGPSRepository;
+    private final VehiculoRepository vehiculoRepository;
 
-    public DispositivoGPSService(DispositivoGPSRepository dispositivoGPSRepository) {
+    public DispositivoGPSService(DispositivoGPSRepository dispositivoGPSRepository,
+            VehiculoRepository vehiculoRepository) {
         this.dispositivoGPSRepository = dispositivoGPSRepository;
+        this.vehiculoRepository = vehiculoRepository;
     }
 
     public List<DispositivoGPS> getAllDispositivosGPS() {
@@ -28,12 +35,25 @@ public class DispositivoGPSService {
     }
 
     @Transactional
-    public DispositivoGPS createDispositivoGPS(DispositivoGPS dispositivoGPS) {
-        log.info("Creando un nuevo dispositivo GPS: {}", dispositivoGPS);
+    // CAMBIO: El método ahora recibe el DTO
+    public DispositivoGPS createDispositivoGPS(DispositivoGPSDTO dto) {
+        log.info("Creando dispositivo desde DTO: {}", dto);
+
         DispositivoGPS newDispositivoGPS = new DispositivoGPS();
-        newDispositivoGPS.setSerialNumber(dispositivoGPS.getSerialNumber());
-        newDispositivoGPS.setModelo(dispositivoGPS.getModelo());
-        newDispositivoGPS.setVehiculo(dispositivoGPS.getVehiculo());
+        newDispositivoGPS.setSerialNumber(dto.getSerialNumber());
+        newDispositivoGPS.setModelo(dto.getModelo());
+
+        // LÓGICA DE ASIGNACIÓN:
+        // Buscamos el vehículo por el ID que viene en el JSON
+        if (dto.getVehiculoId() != null) {
+            Vehiculo vehiculo = vehiculoRepository.findById(dto.getVehiculoId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Vehículo no encontrado con ID: " + dto.getVehiculoId()));
+
+            // Asignamos la relación (JPA se encarga del resto)
+            newDispositivoGPS.setVehiculo(vehiculo);
+        }
+
         return dispositivoGPSRepository.save(newDispositivoGPS);
     }
 

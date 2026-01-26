@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gestion_transporte.model.Vehiculo;
 import com.gestion_transporte.model.Ubicacion;
 
@@ -39,8 +40,16 @@ public class DispositivoGPS {
     private Vehiculo vehiculo;
 
     @OneToMany(mappedBy = "gps", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonIgnoreProperties("gps")
     private List<Ubicacion> historialUbicaciones = new ArrayList<>();
+
+    public Ubicacion getUltimaUbicacion() {
+        if (historialUbicaciones != null && !historialUbicaciones.isEmpty()) {
+            // Retorna la última de la lista (asumiendo orden de inserción)
+            return historialUbicaciones.get(historialUbicaciones.size() - 1);
+        }
+        return null;
+    }
 
     // Getters y Setters
     public UUID getId() {
@@ -65,6 +74,10 @@ public class DispositivoGPS {
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    public UUID getVehiculoId() {
+        return vehiculo != null ? vehiculo.getId() : null;
     }
 
     public Vehiculo getVehiculo() {

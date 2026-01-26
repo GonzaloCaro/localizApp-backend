@@ -46,6 +46,13 @@ public class RutaService {
     }
 
     @Transactional
+    public Ruta getRutaByNombre(String nombre) {
+        log.info("Obteniendo la ruta con nombre: {}", nombre);
+        return rutaRepository.findByNombre(nombre)
+                .orElseThrow(() -> new RuntimeException("Ruta no encontrada con nombre: " + nombre));
+    }
+
+    @Transactional
     public Ruta updateRuta(UUID id, Ruta ruta) {
         log.info("Actualizando la ruta con ID: {}", id);
         Ruta existingRuta = rutaRepository.findById(id)

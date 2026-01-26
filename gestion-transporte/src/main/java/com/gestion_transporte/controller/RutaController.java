@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import com.gestion_transporte.model.Ruta;
 import com.gestion_transporte.service.RutaService;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Slf4j
 @RestController
@@ -67,6 +69,31 @@ public class RutaController {
         Ruta ruta = rutaService.getRutaById(id);
         EntityModel<Ruta> rutaModel = rutaModelAssembler.toModel(ruta);
         return ResponseEntity.ok(rutaModel);
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<EntityModel<Ruta>> getRutaByNombre(@PathVariable String nombre) {
+        log.info("Recibiendo solicitud para obtener la ruta con nombre: {}", nombre);
+        Ruta ruta = rutaService.getRutaByNombre(nombre);
+        EntityModel<Ruta> rutaModel = rutaModelAssembler.toModel(ruta);
+        return ResponseEntity.ok(rutaModel);
+    }
+
+    @PostMapping
+    public ResponseEntity<EntityModel<Ruta>> createRuta(@RequestBody RutaDTO rutaDTO) {
+        log.info("Recibiendo solicitud para crear una nueva ruta");
+        if (rutaDTO == null) {
+            log.error("El DTO de ruta es nulo");
+            throw new IllegalArgumentException("El DTO de ruta no puede ser nulo");
+        }
+        try {
+            Ruta nuevaRuta = rutaService.createRuta(rutaDTO);
+            EntityModel<Ruta> rutaModel = rutaModelAssembler.toModel(nuevaRuta);
+            return ResponseEntity.status(201).body(rutaModel);
+        } catch (Exception e) {
+            log.error("Error al crear la ruta: {}", e.getMessage());
+            throw new RuntimeException("Error al crear la ruta", e);
+        }
     }
 
     @PutMapping("/{id}")

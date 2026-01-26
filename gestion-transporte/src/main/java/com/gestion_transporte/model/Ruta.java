@@ -12,7 +12,6 @@ public class Ruta {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    // ESTA ES LA QUE MANDA (La relación)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehiculo_id", nullable = false)
     @JsonIgnoreProperties({ "rutas", "hibernateLazyInitializer", "handler" })

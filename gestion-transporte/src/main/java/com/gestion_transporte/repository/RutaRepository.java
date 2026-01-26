@@ -10,5 +10,6 @@ import com.gestion_transporte.model.Ruta;
 
 @Repository
 public interface RutaRepository extends JpaRepository<Ruta, UUID> {
+    Optional<Ruta> findByNombre(String nombre);
 
 }

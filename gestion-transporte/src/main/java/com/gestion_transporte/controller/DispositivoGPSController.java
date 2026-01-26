@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestion_transporte.DTO.DispositivoGPSDTO;
-import com.gestion_transporte.DTO.VehiculoDTO;
 import com.gestion_transporte.exception.ResourceNotFoundException;
 import com.gestion_transporte.hateoas.DispositivoGPSModelAssembler;
 import com.gestion_transporte.mapper.DispositivoGPSMapper;
-import com.gestion_transporte.mapper.VehiculoMapper;
 import com.gestion_transporte.model.DispositivoGPS;
 import com.gestion_transporte.service.DispositivoGPSService;
 
@@ -80,13 +78,14 @@ public class DispositivoGPSController {
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<DispositivoGPS>> createDispositivoGPS(@Valid @RequestBody DispositivoGPS dto) {
+    public ResponseEntity<EntityModel<DispositivoGPS>> createDispositivoGPS(@Valid @RequestBody DispositivoGPSDTO dto) {
         log.info("Recibiendo solicitud para crear un nuevo dispositivo GPS");
         if (dto == null) {
             log.error("El DTO de dispositivo GPS es nulo");
-            throw new IllegalArgumentException("El DTO de dispositivo GPS no puede ser nulo");
+            throw new IllegalArgumentException("El DTO no puede ser nulo");
         }
         try {
+            // Pasamos el DTO al servicio
             DispositivoGPS newDispositivoGPS = dispositivoGPSService.createDispositivoGPS(dto);
             EntityModel<DispositivoGPS> dispositivoGPSModel = dispositivoGPSModelAssembler.toModel(newDispositivoGPS);
             return ResponseEntity.ok(dispositivoGPSModel);

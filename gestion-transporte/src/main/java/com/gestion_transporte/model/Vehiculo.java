@@ -47,7 +47,7 @@ public class Vehiculo {
     private Integer anio;
 
     @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ruta> asignaciones = new ArrayList<>();
+    private List<Ruta> rutas = new ArrayList<>();
 
     @OneToOne(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -119,12 +119,12 @@ public class Vehiculo {
     }
 
     // Gestión de relaciones
-    public List<Ruta> getAsignaciones() {
-        return asignaciones;
+    public List<Ruta> getRutas() {
+        return rutas;
     }
 
-    public void setAsignaciones(List<Ruta> asignaciones) {
-        this.asignaciones = asignaciones;
+    public void setRutas(List<Ruta> rutas) {
+        this.rutas = rutas;
     }
 
     public DispositivoGPS getGps() {
