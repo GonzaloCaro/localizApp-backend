@@ -107,7 +107,8 @@ public class AuthController {
 
     @PostMapping("/validate-token")
     public ResponseEntity<?> validateToken(@RequestBody String token) {
-        boolean isValid = jwtUtils.validateJwtToken(token);
+        String cleanToken = token.replace("\"", "").replace("Bearer ", "").trim();
+        boolean isValid = jwtUtils.validateJwtToken(cleanToken);
         return ResponseEntity.ok(isValid);
     }
 }
