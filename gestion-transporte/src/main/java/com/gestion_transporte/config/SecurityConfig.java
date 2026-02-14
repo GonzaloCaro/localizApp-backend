@@ -20,23 +20,23 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtUtils jwtUtils;
+    // private final JwtUtils jwtUtils;
 
-    public SecurityConfig(JwtUtils jwtUtils) {
-        this.jwtUtils = jwtUtils;
-    }
+    // public SecurityConfig(JwtUtils jwtUtils) {
+    // this.jwtUtils = jwtUtils;
+    // }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtUtils);
+        // JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(jwtUtils);
         http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                        // .requestMatchers(HttpMethod.OPTIONS, "/").permitAll())
+                        .anyRequest().permitAll());
+        // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

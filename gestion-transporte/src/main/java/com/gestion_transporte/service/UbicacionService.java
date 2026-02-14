@@ -26,7 +26,6 @@ public class UbicacionService {
         this.ubicacionRepository = ubicacionRepository;
     }
 
-    // El @EntityGraph del repositorio se encarga de traer las relaciones aquí
     public List<Ubicacion> getAllUbicaciones() {
         log.info("Obteniendo todas las ubicaciones");
         return ubicacionRepository.findAll();
@@ -50,7 +49,7 @@ public class UbicacionService {
         ubicacion.setFechaHora(dto.getFechaHora());
         ubicacion.setGps(dto.getGps());
         return ubicacionRepository.save(ubicacion);
-    }
+    } 
 
     @Transactional
     public Ubicacion updateUbicacion(UUID id, UbicacionDTO dto) {

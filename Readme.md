@@ -49,3 +49,27 @@ sudo docker logs -f gestion-usuarios
 ```
 sudo docker ps -a
 ```
+
+sudo docker stop gestion-usuarios
+sudo docker rm gestion-usuarios
+
+sudo docker stop gestion-transporte
+sudo docker rm gestion-transporte
+
+sudo docker stop bff
+sudo docker rm bff
+
+
+sudo docker run -d -p 8080:8080 \
+  --name gestion-usuarios \
+  -v "/home/ec2-user/wallet_oracle:/app/wallet" \
+  -e "SPRING_DATASOURCE_URL=jdbc:oracle:thin:@cxtjowjkr0mdsxfa_high?TNS_ADMIN=/app/wallet" \
+  gonzaduoc/img_cn1_gestion_usuarios:latest
+
+  sudo docker run -d -p 8081:8081 \
+  --name gestion-transporte \
+  -v "/home/ec2-user/wallet_oracle:/app/wallet" \
+  -e "SPRING_DATASOURCE_URL=jdbc:oracle:thin:@cxtjowjkr0mdsxfa_high?TNS_ADMIN=/app/wallet" \
+  gonzaduoc/gestion-transporte:latest
+
+  sudo docker run -d -p 8082:8082 --name bff gonzaduoc/bff:latest

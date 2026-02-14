@@ -27,14 +27,12 @@ import java.util.*;
 //     private final UbicacionRepository ubicacionRepository;
 //     private final ObjectMapper objectMapper; // Jackson para leer el JSON
 
-//     // Mapa maestro de rutas cargadas desde el JSON (NombreRuta -> Lista de
-//     // Coordenadas)
+//     // Mapa maestro de rutas cargadas desde el JSON
 //     private Map<String, List<List<Double>>> rutasDisponibles = new HashMap<>();
 
-//     // Memoria de la simulación:
-//     // 1. ¿Qué ruta está siguiendo cada GPS?
+//     // Memoria de la simulación
 //     private final Map<UUID, String> gpsRouteAssignment = new HashMap<>();
-//     // 2. ¿En qué índice (paso) de la ruta va cada GPS?
+//     // índice (paso) de la ruta que va cada GPS
 //     private final Map<UUID, Integer> gpsProgressIndex = new HashMap<>();
 
 //     public SimulacionService(DispositivoGPSRepository gpsRepository,
@@ -97,7 +95,6 @@ import java.util.*;
 //             int indiceActual = gpsProgressIndex.get(gpsId);
 
 //             // 3. Extraer coordenadas [Lon, Lat]
-//             // OJO: En GeoJSON/Arrays suele ser [0]=Lon (X), [1]=Lat (Y)
 //             List<Double> punto = puntosRuta.get(indiceActual);
 //             double longitud = punto.get(0);
 //             double latitud = punto.get(1);
